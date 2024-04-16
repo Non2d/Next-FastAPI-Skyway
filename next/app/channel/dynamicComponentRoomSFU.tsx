@@ -103,14 +103,17 @@ export default function DynamicComponentRoom() {
       ]);
     });
 
-    room.onMemberJoined.add((event: MemberJoinedEvent) => {
+    room.onMemberJoined.add(async (event: MemberJoinedEvent) => {
       setMemberList((prev) => [
         ...prev,
         { memberId: event.member.id, memberName: event.member.metadata || "" },
       ]);
+      console.log("mario")
       toast(`${event.member.metadata}さんが参加しました`, { icon: "👏" });
+      console.log(member.id);
     });
-    room.onMemberLeft.add((event: MemberLeftEvent) => {
+
+    room.onMemberLeft.add(async (event: MemberLeftEvent) => {
       setMemberList((prev) =>
         prev.filter((member) => member.memberId !== event.member.id)
       );
@@ -166,7 +169,7 @@ export default function DynamicComponentRoom() {
       toast.success(
         `接続成功`
       );
-
+      console.log(member.id);
     } catch (e) {
       console.error(e);
       initializeToken("チャンネル初期化時にエラーが発生しました。\n5秒後に内部トークンを初期化してトップページへ遷移します。");
@@ -186,6 +189,7 @@ export default function DynamicComponentRoom() {
   }
 
   const randomDealCard = async () => {
+    console.log(memberList);
     const data = {
       myChannelName: myChannelName,
       myName: myName,
@@ -250,7 +254,7 @@ export default function DynamicComponentRoom() {
               <div>
                 <div>
                   {/* <ControlCardList /> */}
-                  <ControlCardList />
+                  <ControlDCardList />
                   <h1 className="text-2xl font-medium title-font text-gray-900">
                     参加チャンネル：{myChannelName}
                   </h1>

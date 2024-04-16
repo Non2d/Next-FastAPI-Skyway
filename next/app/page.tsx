@@ -51,7 +51,6 @@ export default function Lounge() {
     if (!Object.keys(JA_CHANNEL_MAPPINGS).includes(channelName)) {
       return toast.error("チャンネル名が不正です");
     }
-    console.log(skywayToken);
     if (!skywayToken) {
       return toast.error("skywayを利用するTokenがありません");
     }
