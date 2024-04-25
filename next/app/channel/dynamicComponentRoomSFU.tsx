@@ -27,7 +27,7 @@ import MyVideo from "./myVideo";
 import { validSkywayToken } from "@/lib/controlSkyway";
 import ControlCardList from "./Card";
 // import BasicSetup from "./DraggableCard";
-import ControlDCardList from "./DraggableCard";
+// import ControlDCardList from "./DraggableCard";
 
 type MemberInfo = { memberId: string; memberName: string };
 
@@ -253,8 +253,8 @@ export default function DynamicComponentRoom() {
               // isChannelJoinedがtrueで、かつmemberListにメンバーが存在する場合のコンテンツ
               <div>
                 <div>
-                  {/* <ControlCardList /> */}
-                  <ControlDCardList />
+                  <ControlCardList />
+                  {/* <ControlDCardList /> */}
                   <h1 className="text-2xl font-medium title-font text-gray-900">
                     参加チャンネル：{myChannelName}
                   </h1>
