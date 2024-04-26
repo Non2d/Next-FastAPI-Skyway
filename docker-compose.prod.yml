@@ -25,11 +25,7 @@ services:
       context: ./next
       dockerfile: Dockerfile.prod
     ports:
-      - "7000:7000"
-    environment:
-      - NODE_ENV=production
-    volumes:
-      - ./next:/app
+      - "7000:3000"
     networks:
       - docker_network
 
