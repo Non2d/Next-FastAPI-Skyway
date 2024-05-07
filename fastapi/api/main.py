@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import get_env_variable
 
-from routers import task, done#, sse
+from routers import room
 
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json")
 
@@ -26,9 +26,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "FastAPI"}
+    return {"Hello": "FastAPI is running :)"}
 
 # そのうちforで書いたりしよう
-app.include_router(task.router)
-app.include_router(done.router)
-# app.include_router(sse.router)
+app.include_router(room.router)

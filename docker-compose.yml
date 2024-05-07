@@ -39,12 +39,12 @@ services:
     tty: true
     ports:
       - "3306:3306"
-    # env_file:
-    #   - ./mysql/.env #FastAPIから接続させるため，コメントアウト
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_DATABASE: "demo"
-      TZ: "Asia/Tokyo"
+    env_file:
+      - ./mysql/.env #FastAPIから接続させるため，コメントアウト
+    # environment:
+    #   MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    #   MYSQL_DATABASE: "demo"
+    #   TZ: "Asia/Tokyo"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:

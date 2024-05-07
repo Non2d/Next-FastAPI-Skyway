@@ -1,6 +1,6 @@
 import time
 from sqlalchemy import create_engine
-from models.task import Base
+from models.room import Base
 from config import get_env_variable
 
 # DB_URL = "mysql+pymysql://root@db:3306/demo?charset=utf8" #demoデータベース
