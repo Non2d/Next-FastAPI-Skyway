@@ -1,6 +1,6 @@
 "use client";
 import toast from "react-hot-toast";
-import { useState, useLayoutEffect, useRef } from "react";
+import { useState, useLayoutEffect, useRef, useEffect } from "react";
 import {
   SkyWayContext,
   SkyWayRoom,
@@ -49,6 +49,8 @@ export default function DynamicComponentRoom() {
   let room: SfuRoom;
   let member: LocalSFURoomMember;
 
+  const [isNavigationAllowed, setIsNavigationAllowed] = useState(false);
+
   useLayoutEffect(() => {
     setMyName(faker.person.lastName());
     if (!validSkywayToken(skywayJwtForToken)) {
@@ -56,6 +58,43 @@ export default function DynamicComponentRoom() {
       setSkywayJwtForToken("");
       location.href = "/";
     }
+  }, []);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isNavigationAllowed) {
+        const message = '本当にページを離れますか？';
+        event.returnValue = message;  // これが確認ダイアログに表示されます。
+        return message;
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isNavigationAllowed]); // 依存配列に `isNavigationAllowed` を追加
+
+  // ナビゲーションを許可するためのボタンのハンドラ
+  const allowNavigation = () => {
+    setIsNavigationAllowed(true);
+  };
+
+  useEffect(() => {
+    // 履歴エントリを追加して、ページロード時の位置に固定する
+    window.history.pushState(null, document.title, window.location.href);
+
+    const handlePopState = (event: PopStateEvent): void => {
+      // 再度、現在の位置で履歴エントリを追加し、バックナビゲーションを防ぐ
+      window.history.pushState(null, document.title, window.location.href);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, []);
 
   const subscribeAndAttach = async (publication: RoomPublication<LocalStream>) => {
@@ -259,7 +298,7 @@ export default function DynamicComponentRoom() {
                     参加チャンネル：{myChannelName}
                   </h1>
                   <>
-                    <p className="text-gray-700 opacity-60">部屋退出時は右上のボタンから</p>
+                    <p className="text-gray-700 opacity-60">部屋退出は「トップページに戻る」ボタンから</p>
                   </>
                 </div>
               </div>
@@ -301,17 +340,21 @@ export default function DynamicComponentRoom() {
 
       <div>
         <section className="fixed right-0 bottom-0 flex m-2">
-          <a href="/">
+          <a href="/" onClick={allowNavigation}>
             <div className="text-4lx bg-red-600 rounded-lg p-4 mb-2 text-center hover:bg-red-700 cursor-pointer text-white font-bold mr-2">
               トップページに戻る
             </div>
           </a>
           <button
-            onClick={() => initializeToken("5秒後にトークンを初期化します.")}
+            onClick={() => {
+              initializeToken("5秒後にトークンを初期化します.");
+              allowNavigation();
+            }}
             className="text-4lx bg-red-600 rounded-lg p-4 mb-2 text-center hover:bg-red-700 cursor-pointer text-white font-bold mr-2"
           >
             トークンを初期化
           </button>
+          
           <button
             onClick={randomDealCard}
             className="text-4lx bg-red-600 rounded-lg p-4 mb-2 text-center hover:bg-red-700 cursor-pointer text-white font-bold mr-2"

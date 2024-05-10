@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from config import get_env_variable
+from config import get_env_variable #本当はoriginsをenvに入れろ
 
 from routers import room
+from routers import sse
 
 app = FastAPI(docs_url="/docs", openapi_url="/openapi.json")
 
@@ -30,3 +31,4 @@ def read_root():
 
 # そのうちforで書いたりしよう
 app.include_router(room.router)
+app.include_router(sse.router)
