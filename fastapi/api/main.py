@@ -9,7 +9,7 @@ app = FastAPI(docs_url="/docs", openapi_url="/openapi.json")
 
 origins = [
     "http://localhost",
-    "http://localhost:8000",
+    "http://localhost:3000",
     "http://vps4.nkmr.io",
     "https://vps4.nkmr.io",
     "http://localhost:7000",
