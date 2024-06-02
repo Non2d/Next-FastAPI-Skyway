@@ -127,11 +127,19 @@ export default function DynamicComponentRoom() {
     stream.attach(mediaElement);
   }
 
+  const testShowInfo = () => {
+    console.log("Checking info from Skyway SDK----------------------------");
+    console.log(room);
+    console.log(room.members);
+    console.log("----------------------------");
+  }
+
   const startMemberListControl = () => {
     //単なる通知だけでなく，memberDivにも関係している
     if (!room) {
       return;
     }
+
     room.members.forEach((remoteMember: RemoteRoomMember) => {
       if (remoteMember.id == member.id) {
         return;
@@ -147,7 +155,6 @@ export default function DynamicComponentRoom() {
         ...prev,
         { memberId: event.member.id, memberName: event.member.metadata || "" },
       ]);
-      console.log("mario")
       toast(`${event.member.metadata}さんが参加しました`, { icon: "👏" });
       console.log(member.id);
     });
@@ -201,6 +208,8 @@ export default function DynamicComponentRoom() {
       });
       setIsChannelJoined(() => true);
 
+      testShowInfo();
+
       startMemberListControl();
       await publishVideoAndAudioStream();
       room.publications.forEach(subscribeAndAttach);
@@ -208,7 +217,7 @@ export default function DynamicComponentRoom() {
       toast.success(
         `接続成功`
       );
-      console.log(member.id);
+      // console.log(member.id);
     } catch (e) {
       console.error(e);
       initializeToken("チャンネル初期化時にエラーが発生しました。\n5秒後に内部トークンを初期化してトップページへ遷移します。");
@@ -228,36 +237,42 @@ export default function DynamicComponentRoom() {
   }
 
   const randomDealCard = async () => {
-    console.log(memberList);
-    const data = {
-      myChannelName: myChannelName,
-      myName: myName,
-      myId: myId,
-      memberList: memberList,
-    };
+    console.log("Checking info from Skyway SDK----------------------------");
 
-    const response = await fetch("/api/getCardInfo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    // console.log(room); //無理．joinChannel内の関数でしかroomは取得できない
 
-    const apiResponse = await response.json();
+    console.log("----------------------------");
 
-    if (response.ok) {
-      if (apiResponse.isSuccess) {
-        const apiResponseBody = apiResponse.body;
-        console.log(apiResponseBody);
-      } else {
-        const apiResponseBody = apiResponse.body;
-        toast.error(apiResponseBody.errorMessage);
-      }
-    } else {
-      toast.error("connectionError");
-      console.error(response)
-    }
+    // console.log(memberList);
+    // const data = {
+    //   myChannelName: myChannelName,
+    //   myName: myName,
+    //   myId: myId,
+    //   memberList: memberList,
+    // };
+
+    // const response = await fetch("/api/getCardInfo", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // });
+
+    // const apiResponse = await response.json();
+
+    // if (response.ok) {
+    //   if (apiResponse.isSuccess) {
+    //     const apiResponseBody = apiResponse.body;
+    //     console.log(apiResponseBody);
+    //   } else {
+    //     const apiResponseBody = apiResponse.body;
+    //     toast.error(apiResponseBody.errorMessage);
+    //   }
+    // } else {
+    //   toast.error("connectionError");
+    //   console.error(response)
+    // }
 
   };
 

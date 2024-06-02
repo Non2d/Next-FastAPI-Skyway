@@ -5,11 +5,11 @@ const SSEComponent = () => {
     const [messages, setMessages] = useState<string[]>([]);
 
     useEffect(() => {
-        const eventSource = new EventSource("http://localhost:8080/rooms/sse2");
+        const eventSource = new EventSource("http://localhost:8080/rooms/sse");
 
         eventSource.onmessage = function(event) {
             setMessages(prevMessages => [...prevMessages, event.data]);
-            console.log('New event from server:', event.data);
+            // console.log('New event from server:', event.data);
         };
 
         // コンポーネントのアンマウント時に接続を閉じる
